@@ -21,7 +21,7 @@ class FeedScreen extends StatelessWidget {
             IconButton(
                 onPressed: null,
             icon: ImageIcon(
-              AssetImage('assets/images/actionbar_camera.png'),
+              AssetImage('assets/images/star01.png'),
               color: Colors.black87
             )
             )

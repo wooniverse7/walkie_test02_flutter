@@ -66,11 +66,11 @@ class Post extends StatelessWidget {
           icon: ImageIcon(AssetImage('assets/images/comment.png')),
           color: Colors.black87,
         ),
-        IconButton(
-          onPressed: null,
-          icon: ImageIcon(AssetImage('assets/images/direct_message.png')),
-          color: Colors.black87,
-        ),
+        // IconButton(
+        //   onPressed: null,
+        //   icon: ImageIcon(AssetImage('assets/images/direct_message.png')),
+        //   color: Colors.black87,
+        // ),
         Spacer(), //3개 버튼과 공백 추가
         IconButton(
           onPressed: null,

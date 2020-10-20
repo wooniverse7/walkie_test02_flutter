@@ -26,6 +26,7 @@ class _mapPageState extends State<mapPage> {
           _controller.animateCamera(CameraUpdate.newLatLng(cordinate));
           addMarker(cordinate);
         },
+
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
