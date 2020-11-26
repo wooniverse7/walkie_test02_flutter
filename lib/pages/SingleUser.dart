@@ -1,7 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:walkie_test02/data/Sample.dart';
 import 'package:walkie_test02/heiper/Colorsys.dart';
+import 'package:walkie_test02/models/Collocation.dart';
+import 'package:walkie_test02/models/User.dart';
 
 class SingleUser extends StatefulWidget {
+  final User user;
+
+  const SingleUser({Key key, this.user}) : super(key: key);
   @override
   _SingleUserState createState() => _SingleUserState();
 }
@@ -15,7 +23,9 @@ class _SingleUserState extends State<SingleUser> {
           elevation: 0,
           backgroundColor: Colors.white,
           leading: BackButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             color: Colorsys.grey,
           ),
           actions: [
@@ -40,15 +50,13 @@ class _SingleUserState extends State<SingleUser> {
             child: Column(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage('assets/pics/normal01.jpg'),
+                  backgroundImage: AssetImage(widget.user.profilePicture),
                   maxRadius: 40,
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "seong il",
-                  style: TextStyle(
+                Text(widget.user.name, style: TextStyle(
                     fontSize: 20,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -57,9 +65,7 @@ class _SingleUserState extends State<SingleUser> {
                 SizedBox(
                   height: 5,
                 ),
-                Text(
-                  "@inha_programmer",
-                  style: TextStyle(
+                Text(widget.user.username, style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey,
                   ),
@@ -70,14 +76,14 @@ class _SingleUserState extends State<SingleUser> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    makeFollowWidgets(count: 237, name: "Followers"),
+                    makeFollowWidgets(count: widget.user.followers, name: "Followers"),
                     Container(
                       width: 2,
                       height: 15,
                       margin: EdgeInsets.symmetric(horizontal: 20),
                       color: Colorsys.lightGrey,
                     ),
-                    makeFollowWidgets(count: 145, name: "Following"),
+                    makeFollowWidgets(count: widget.user.following, name: "Following"),
                   ],
                 ),
                 SizedBox(
@@ -90,6 +96,7 @@ class _SingleUserState extends State<SingleUser> {
           SizedBox(
             height: 20,
           ),
+          SizedBox(height: 30,),
           Padding(
             padding: EdgeInsets.all(20),
             child: Column(
@@ -97,17 +104,143 @@ class _SingleUserState extends State<SingleUser> {
                 Container(
                   decoration: BoxDecoration(
                       border: Border(bottom: BorderSide(
-                        )
-                      )
+                        color: Colorsys.grey300,
+                        ))
                   ),
-                )
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Collocation", style: TextStyle(
+                            color: Colorsys.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15
+                          ),),
+                          Container(
+                            width: 50,
+                            padding: EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              border: Border(bottom: BorderSide(
+                                color: Colorsys.orange,
+                                width: 3,
+                              ))
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(width: 20,),
+                      Text("Likes", style: TextStyle(
+                        color: Colorsys.grey,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15
+                      ),)
+                    ],
+                  )
+                ),
+                makeCollocation(widget.user.collocation)
               ],
             ),
           ),
-          SizedBox(
-            height: 200,
+        ])
+        )
+    );
+  }
+
+  Widget makeCollocation(List<Collocation> collocation){
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 20),
+            height: 320,
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: collocation.length,
+              itemBuilder: (context, index) {
+                return AspectRatio(
+                    aspectRatio: 1.2/1,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                          child: Container(
+                             margin: EdgeInsets.only(right: 20),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(collocation[index].thumbnail),
+                                fit: BoxFit.cover
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.orange
+                            ),
+                            child: Stack(
+                              alignment: AlignmentDirectional.bottomCenter,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                    child: Container(
+                                      height: 90,
+                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(24),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(collocation[index].name, style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15
+                                          )),
+                                          SizedBox(height: 5,),
+                                          Text(collocation[index].tags.length.toString() + " photos", style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w300
+                                          ),)
+                                        ],
+                                      )
+                                    ),
+                                  )
+                                )
+                              ],
+                            )
+                          )),
+                      SizedBox(height: 10,),
+                      Container(
+                        height: 32,
+                        margin: EdgeInsets.only(right: 20),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: collocation[index].tags.length,
+                          itemBuilder: (context, tagIndex)=> Container(
+                            margin: EdgeInsets.only(right: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colorsys.grey300
+                            ),
+                            child: Center(
+                              child: Text(collocation[index].tags[tagIndex], style: TextStyle(
+                            ),),
+                          )
+                        )
+                        )
+                      )
+                    ],
+                  ),
+                );
+              },
+            )
           )
-        ])));
+        ],
+      ),
+    );
   }
 
   Widget makeFollowWidgets({count, name}) {
@@ -171,7 +304,7 @@ class _SingleUserState extends State<SingleUser> {
                 onPressed: () {},
                 color: Colorsys.orange,
                 child: Text(
-                  "Follow",
+                  "Message",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w400),
                 ),

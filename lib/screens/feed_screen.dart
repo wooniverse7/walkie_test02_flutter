@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -6,8 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:walkie_test02/models/Post.dart';
 import 'package:walkie_test02/data/Sample.dart';
 import 'package:walkie_test02/heiper/Colorsys.dart';
+import 'package:walkie_test02/pages/SingleUser.dart';
 
-class FeedScreen extends StatelessWidget {
+class FeedScreen extends StatefulWidget {
+
+  @override
+  _FeedScreenState createState() => _FeedScreenState();
+}
+
+class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold( //StatefullWidget의 기능 사용허가
@@ -99,29 +105,36 @@ class FeedScreen extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 30),
       child: Column(
         children: <Widget>[
-          Row(
-            children: [
-              CircleAvatar(
-                maxRadius: 20,
-                backgroundImage: AssetImage(post.user.profilePicture),
-              ),
-              SizedBox(width: 20,),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(post.user.name, style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),),
-                    Text(post.dateAgo, style: TextStyle(
-                      fontSize: 13,
-                      color: Colorsys.grey
-                    ),)
-                  ],
+          InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => SingleUser(user: post.user)
+              ));
+            },
+            child: Row(
+              children: [
+                CircleAvatar(
+                  maxRadius: 20,
+                  backgroundImage: AssetImage(post.user.profilePicture),
                 ),
-              )
-            ],
+                SizedBox(width: 20,),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(post.user.name, style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),),
+                      Text(post.dateAgo, style: TextStyle(
+                        fontSize: 13,
+                        color: Colorsys.grey
+                      ),)
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
           Container(
             height: 300,
@@ -163,7 +176,7 @@ class FeedScreen extends StatelessWidget {
                                         color: Colors.grey[600].withOpacity(0.1)
                                       ),
                                       child: Center(
-                                        child: Image.asset('assets/images/link.jpg')
+                                        child: Image.asset('assets/images/link01.jpg')
                                       ),
                                     )
                                   ),
